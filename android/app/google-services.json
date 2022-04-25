@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "214539483940",
+    "project_id": "open-ai-a5fb6",
+    "storage_bucket": "open-ai-a5fb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214539483940:android:75233ce1412a02e5ff91b1",
+        "android_client_info": {
+          "package_name": "com.open.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214539483940-3a07a6u4lo33nfufr529qp62bgav4l5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABml_RTOb_NEMq86zaHEwTAacnrwHm__s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214539483940-3a07a6u4lo33nfufr529qp62bgav4l5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
