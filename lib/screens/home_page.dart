@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:open_ai/crop_prediction.dart';
 import 'package:open_ai/prediction.dart';
+import 'package:open_ai/leaf_prediction.dart';
 
 import '../model data/weather_data.dart';
 import '../widgets/custom_textstyle.dart';
@@ -77,30 +79,76 @@ class _HomePageState extends State<HomePage> {
                     height: 1,
                     thickness: 1,
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: const Text('Logout'),
-                    // selected: _selectedDestination == 0,
-                    onTap: () {
-                      FirebaseAuth.instance.signOut();
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.logout),
+                      title: const Text('Logout'),
+                      // selected: _selectedDestination == 0,
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                    ),
                   ),
                   const Divider(
                     height: 1,
                     thickness: 1,
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.auto_graph),
-                    title: const Text('Forcast'),
-                    // selected: _selectedDestination == 0,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Prediction()),
-                      );
-                      // FirebaseAuth.instance.signOut();
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.auto_graph),
+                      title: const Text('Forcast'),
+                      // selected: _selectedDestination == 0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Prediction()),
+                        );
+                        // FirebaseAuth.instance.signOut();
+                      },
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.auto_graph),
+                      title: const Text('Crop Prediction'),
+                      // selected: _selectedDestination == 0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CropPred()),
+                        );
+                        // FirebaseAuth.instance.signOut();
+                      },
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.batch_prediction),
+                      title: const Text('Plant Disease Prediction'),
+                      // selected: _selectedDestination == 0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SkinPred()),
+                        );
+                        // FirebaseAuth.instance.signOut();
+                      },
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
                   ),
                 ]),
           ),

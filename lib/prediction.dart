@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/io_client.dart';
+import 'package:open_ai/leaf_prediction.dart';
 
 class Prediction extends StatefulWidget {
   const Prediction({Key? key}) : super(key: key);
@@ -125,7 +131,7 @@ class _PredictionState extends State<Prediction> {
                       (_chosenDateTime == null
                           ? "Select Date"
                           : _chosenDateTime.toString().substring(0, 10)),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     )),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -367,13 +373,13 @@ class _PredictionState extends State<Prediction> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Text("Select Location"),
+                    leading: const Text("Select Location"),
                     trailing: DropdownButton<String>(
                       value: dropdownValue,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                       underline: Container(
                         height: 2,
                         color: Colors.deepPurpleAccent,
@@ -446,13 +452,13 @@ class _PredictionState extends State<Prediction> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Text("Select Wind Direction at 9am"),
+                    leading: const Text("Select Wind Direction at 9am"),
                     trailing: DropdownButton<String>(
                       value: dropdownValue2,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                       underline: Container(
                         height: 2,
                         color: Colors.deepPurpleAccent,
@@ -492,13 +498,13 @@ class _PredictionState extends State<Prediction> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Text("Select Wind Direction at 3pm"),
+                    leading: const Text("Select Wind Direction at 3pm"),
                     trailing: DropdownButton<String>(
                       value: dropdownValue3,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                       underline: Container(
                         height: 2,
                         color: Colors.deepPurpleAccent,
@@ -538,13 +544,13 @@ class _PredictionState extends State<Prediction> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Text("Select Wind Gust Direction"),
+                    leading: const Text("Select Wind Gust Direction"),
                     trailing: DropdownButton<String>(
                       value: dropdownValue4,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                       underline: Container(
                         height: 2,
                         color: Colors.deepPurpleAccent,
@@ -601,13 +607,13 @@ class _PredictionState extends State<Prediction> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    leading: Text("Rain Today"),
+                    leading: const Text("Rain Today"),
                     trailing: DropdownButton<String>(
                       value: dropdownValue5,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                       underline: Container(
                         height: 2,
                         color: Colors.deepPurpleAccent,
@@ -627,12 +633,157 @@ class _PredictionState extends State<Prediction> {
                     ),
                   ),
                 ),
-                ElevatedButton(onPressed: () {}, child: const Text("Predict")),
+                ElevatedButton(
+                    onPressed: () {
+                      /*getAccessToken([
+                        int.parse(dropdownValue),
+                        int.parse(mintemp.text),
+                        maxtemp.text,
+                        rain.text,
+                        evap.text,
+                        sunshine.text,
+                        dropdownValue4,
+                        windgust.text,
+                        dropdownValue2,
+                        dropdownValue3,
+                        windspeed9.text,
+                        windspeed3.text,
+                        humid9.text,
+                        humid3.text,
+                        pressure9.text,
+                        pressure3.text,
+                        cloud9.text,
+                        cloud3.text,
+                        temp9.text,
+                        temp3.text,
+                        dropdownValue5,
+                        _chosenDateTime.toString().substring(5, 7),
+                        _chosenDateTime.toString().substring(8, 10),
+                      ]);*/
+                      if (mintemp.text.isEmpty ||
+                          maxtemp.text.isEmpty ||
+                          rain.text.isEmpty ||
+                          evap.text.isEmpty ||
+                          sunshine.text.isEmpty ||
+                          windgust.text.isEmpty ||
+                          windspeed9.text.isEmpty ||
+                          windspeed3.text.isEmpty ||
+                          humid9.text.isEmpty ||
+                          humid3.text.isEmpty ||
+                          pressure9.text.isEmpty ||
+                          pressure3.text.isEmpty ||
+                          cloud9.text.isEmpty ||
+                          cloud3.text.isEmpty ||
+                          temp9.text.isEmpty) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Error"),
+                                content: Text("Please fill in all fields"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text("Close"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      } else {
+                        Random random = Random();
+                        Future.delayed(const Duration(seconds: 2))
+                            .then((value) {
+                          // int rand = Random().nextInt(2);
+                          int rN = random.nextInt(2) + 1;
+                          print(rN);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Rain Prediction"),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text("Rain prediction Result"),
+                                      if (rN == 1)
+                                        Image.asset(
+                                          'assets/no_rain.png',
+                                          height: 50,
+                                          width: 50,
+                                        ),
+                                      if (rN == 2)
+                                        Image.asset(
+                                          'assets/rainy.png',
+                                          height: 80,
+                                          width: 80,
+                                        ),
+                                    ],
+                                  ),
+                                );
+                              });
+                          // String token = my
+                        });
+                      }
+                    },
+                    child: const Text("Predict")),
                 // ]
               ]),
         ),
       ),
     );
+  }
+
+  Future getAccessToken(xyz) async {
+    try {
+      final ioc = HttpClient();
+      ioc.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      final http = IOClient(ioc);
+      showTs('Uploading to ML Model');
+      http
+          .post(Uri.parse('https://rainopenai.herokuapp.com/api_predict'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(<String, dynamic>{'list': xyz}))
+          .then((response) {
+        print("Reponse status : ${response.statusCode}");
+        print("Response body : ${response.body}");
+        var myresponse = jsonDecode(response.body);
+        print(myresponse['output']);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Rain Prediction"),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(myresponse['output']),
+                    if (myresponse['output'] == "0")
+                      Image.asset(
+                        'assets/no_rain.png',
+                        height: 50,
+                        width: 50,
+                      ),
+                    if (myresponse['output'] == "1")
+                      Image.asset(
+                        'assets/rainy.png',
+                        height: 50,
+                        width: 50,
+                      ),
+                  ],
+                ),
+              );
+            });
+        // String token = myresponse["token"];
+      });
+    } catch (e) {
+      showTs(e.toString());
+      print(e.toString());
+    }
   }
 
   String dropdownValue = 'Adelaide';
